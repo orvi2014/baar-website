@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>baar-core — Pre-flight budget enforcement for LLM agents</title>
+  <meta name="description" content="Hard budget enforcement for LLM agents. Stops API calls before they happen. 84–94% cost reduction.">
+  <meta property="og:title" content="baar-core — Stop LLM bills before they happen">
+  <meta property="og:description" content="Pre-flight kill-switch for LLM agents. Local budget check. No DNS, no TCP, $0 once you're out.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sticky nav -->
+  <nav class="topbar">
+    <div class="topbar-left">
+      <div class="traffic-lights">
+        <span class="tl tl-red"></span>
+        <span class="tl tl-yellow"></span>
+        <span class="tl tl-green"></span>
+      </div>
+      <span class="topbar-title">baar-core — zsh — 120×40</span>
+    </div>
+    <div class="topbar-right">
+      <a href="https://github.com/orvi2014/Baar-Core" class="nav-link" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span class="nav-link-text">GitHub</span>
+      </a>
+      <a href="https://pypi.org/project/baar-core/" class="nav-link" target="_blank" rel="noopener">PyPI</a>
+      <a href="https://github.com/orvi2014/Baar-Core#readme" class="nav-link nav-link-hide" target="_blank" rel="noopener">Docs</a>
+    </div>
+  </nav>
+
+  <main class="terminal">
+
+    <!-- ─── HERO ─── -->
+    <section class="section" id="hero">
+      <pre class="ascii-logo hero-item" aria-label="BAAR">
+<span class="g">██████╗  █████╗  █████╗ ██████╗ </span>
+<span class="g">██╔══██╗██╔══██╗██╔══██╗██╔══██╗</span>
+<span class="g">██████╔╝███████║███████║██████╔╝</span>
+<span class="g">██╔══██╗██╔══██║██╔══██║██╔══██╗</span>
+<span class="g">██████╔╝██║  ██║██║  ██║██║  ██╗</span>
+<span class="g">╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝</span></pre>
+
+      <p class="version dim hero-item"><span id="pkg-version">v0.5.0</span> &nbsp;·&nbsp; pre-flight budget enforcement for LLM agents</p>
+
+      <div class="spacer"></div>
+
+      <p class="prompt-line hero-item" id="hero-prompt">
+        <span class="ps1">$</span> baar <span class="flag-arg">--about</span>
+      </p>
+
+      <div class="spacer-sm"></div>
+
+      <h1 class="tagline hero-item">
+        Stop LLM API calls <span class="g">before they happen.</span><br>
+        <span class="dim-h1">Not after.</span>
+      </h1>
+      <p class="subtext hero-item">
+        Hard local kill-switch. Estimates cost before every request.<br>
+        Budget gone &rarr; exception raised locally. No DNS. No TCP. <span class="a">$0 charged.</span>
+      </p>
+
+      <div class="spacer"></div>
+
+      <div class="install-row hero-item">
+        <span class="ps1">$</span>
+        <code class="install-cmd" id="install-cmd">pip install baar-core</code>
+        <button class="copy-btn" id="copy-btn" onclick="copyInstall()" aria-label="Copy install command">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <span id="copy-label">copy</span>
+        </button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="cta-row hero-item">
+        <a href="https://github.com/orvi2014/Baar-Core" class="btn-primary" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View on GitHub
+        </a>
+        <a href="#incident" class="btn-ghost" onclick="smoothScroll(event,'incident')">↓ see the problem</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── INCIDENT ─── -->
+    <section class="section" id="incident">
+
+      <!-- WITHOUT baar-core -->
+      <div class="term-window" id="term-bad">
+        <div class="term-titlebar">
+          <div class="traffic-lights">
+            <span class="tl tl-red"></span>
+            <span class="tl tl-yellow"></span>
+            <span class="tl tl-green"></span>
+          </div>
+          <span class="term-file">agent.py &mdash; without baar-core</span>
+        </div>
+        <div class="term-body">
+
+          <div class="tl-row tl-cmd">
+            <span class="ps1">$</span> <span class="cmd-text" data-orig="python agent.py">python agent.py</span><span class="tl-cursor"></span>
+          </div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row">
+            <span class="tl-marker tl-blue">[*]</span> agent_loop starting &mdash; task: <span class="s">"answer user queries"</span>
+          </div>
+          <div class="tl-row">
+            <span class="tl-marker tl-blue">[*]</span> model: <span class="s">gpt-4o</span> &nbsp;&nbsp; no budget limit set
+          </div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-call-hdr">
+            <span class="tl-marker tl-dim">&gt;&gt;&gt;</span> call <span class="a">#1</span>
+          </div>
+          <div class="tl-row tl-indent">prompt &nbsp;&nbsp; : <span class="s">"what time is it?"</span></div>
+          <div class="tl-row tl-indent">model &nbsp;&nbsp;&nbsp; : gpt-4o</div>
+          <div class="tl-row tl-indent">response : <span class="dim">"It's 2:14 AM."</span></div>
+          <div class="tl-row tl-indent">tokens &nbsp;&nbsp; : 847 &nbsp; cost: <span class="a">$0.054</span> &nbsp; total: <span class="a">$0.054</span></div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-call-hdr">
+            <span class="tl-marker tl-dim">&gt;&gt;&gt;</span> call <span class="a">#2</span>
+          </div>
+          <div class="tl-row tl-indent">prompt &nbsp;&nbsp; : <span class="s">"what time is it?"</span></div>
+          <div class="tl-row tl-indent">model &nbsp;&nbsp;&nbsp; : gpt-4o</div>
+          <div class="tl-row tl-indent">tokens &nbsp;&nbsp; : 847 &nbsp; cost: <span class="a">$0.054</span> &nbsp; total: <span class="a">$0.108</span></div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-skip">
+            <span class="skip-dots"></span>
+            <span class="skip-text dim">&nbsp;&mdash;&mdash;&mdash; 844 more identical calls &nbsp;&middot;&nbsp; 8 hours later &mdash;&mdash;&mdash;</span>
+          </div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-call-hdr">
+            <span class="tl-marker tl-dim">&gt;&gt;&gt;</span> call <span class="r">#847</span>
+          </div>
+          <div class="tl-row tl-indent">prompt &nbsp;&nbsp; : <span class="s">"what time is it?"</span></div>
+          <div class="tl-row tl-indent">tokens &nbsp;&nbsp; : 847 &nbsp; cost: <span class="r">$0.054</span> &nbsp; total: <span class="r blink-text">$47.23</span></div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-err">
+            <span class="tl-marker tl-red">[!]</span> <span class="r">BILL RECEIVED: $47.23</span>
+          </div>
+          <div class="tl-row tl-indent r">calls: 847 &nbsp;&middot;&nbsp; tokens: 20,841 &nbsp;&middot;&nbsp; runtime: 8h 07m</div>
+          <div class="tl-row tl-indent dim">no kill-switch active. provider already charged.</div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <!-- WITH baar-core -->
+      <div class="term-window term-window-ok" id="term-good">
+        <div class="term-titlebar">
+          <div class="traffic-lights">
+            <span class="tl tl-red"></span>
+            <span class="tl tl-yellow"></span>
+            <span class="tl tl-green"></span>
+          </div>
+          <span class="term-file">agent.py &mdash; with baar-core</span>
+        </div>
+        <div class="term-body">
+
+          <div class="tl-row tl-cmd">
+            <span class="ps1">$</span> <span class="cmd-text" data-orig="python agent.py">python agent.py</span><span class="tl-cursor"></span>
+          </div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-ok">
+            <span class="tl-marker tl-green">[&#x2713;]</span> baar-core active &mdash; budget: <span class="g">$0.10</span> &nbsp; routing: <span class="g">ON</span>
+          </div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-call-hdr">
+            <span class="tl-marker tl-dim">&gt;&gt;&gt;</span> call <span class="g">#1</span>
+          </div>
+          <div class="tl-row tl-indent">prompt &nbsp;&nbsp;&nbsp; : <span class="s">"what time is it?"</span></div>
+          <div class="tl-row tl-indent">pre-flight : estimated <span class="a">$0.054</span> &nbsp; remaining <span class="g">$0.10</span> &nbsp; &rarr; <span class="g">PASS</span></div>
+          <div class="tl-row tl-indent">routing &nbsp;&nbsp; : complexity <span class="dim">0.02</span> &rarr; cheap tier <span class="dim">(gpt-4o-mini)</span></div>
+          <div class="tl-row tl-indent">tokens &nbsp;&nbsp;&nbsp; : 12 &nbsp; cost: <span class="g">$0.0001</span> &nbsp; total: <span class="g">$0.0001</span></div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-call-hdr">
+            <span class="tl-marker tl-dim">&gt;&gt;&gt;</span> call <span class="g">#2</span>
+          </div>
+          <div class="tl-row tl-indent">prompt &nbsp;&nbsp;&nbsp; : <span class="s">"what time is it?"</span></div>
+          <div class="tl-row tl-indent">pre-flight : estimated <span class="a">$0.054</span> &nbsp; remaining <span class="g">$0.099</span> &rarr; <span class="g">PASS</span></div>
+          <div class="tl-row tl-indent">routing &nbsp;&nbsp; : complexity <span class="dim">0.02</span> &rarr; cheap tier</div>
+          <div class="tl-row tl-indent">tokens &nbsp;&nbsp;&nbsp; : 12 &nbsp; cost: <span class="g">$0.0001</span> &nbsp; total: <span class="g">$0.0002</span></div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-call-hdr">
+            <span class="tl-marker tl-dim">&gt;&gt;&gt;</span> call <span class="r">#3</span>
+          </div>
+          <div class="tl-row tl-indent">prompt &nbsp;&nbsp;&nbsp; : <span class="s">"what time is it?"</span></div>
+          <div class="tl-row tl-indent tl-err-line">pre-flight : estimated <span class="a">$0.054</span> &nbsp; remaining <span class="a">$0.098</span> &rarr; <span class="r">FAIL</span></div>
+          <div class="tl-row tl-spacer"></div>
+
+          <div class="tl-row tl-ok tl-stop">
+            <span class="tl-marker tl-green">[&#x2713;]</span> <span class="g">BudgetExhausted</span> raised locally
+          </div>
+          <div class="tl-row tl-indent dim">no DNS lookup &nbsp;&middot;&nbsp; no TCP connection &nbsp;&middot;&nbsp; <span class="g">$0 charged on call #3</span></div>
+          <div class="tl-row tl-indent tl-saved">total spent: <span class="g">$0.0002</span> &nbsp;&middot;&nbsp; <span class="g">$47.23 saved</span></div>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── HOW IT WORKS ─── -->
+    <section class="section" id="how-it-works">
+      <p class="prompt-line section-prompt"><span class="ps1">$</span> baar <span class="flag-arg">--explain-routing</span></p>
+      <div class="spacer-sm"></div>
+      <div class="scroll-x">
+        <pre class="flow">User task
+    │
+    ▼
+┌───────────────────────────────────────┐
+│  <span class="g">Pre-flight budget check</span>                │  ← estimated cost &gt; remaining budget?
+│  (local, zero network calls)          │    <span class="r">raise BudgetExhausted</span> — blocked
+└────────────┬──────────────────────────┘
+             │ affordable
+             ▼
+┌───────────────────────────────────────┐
+│  <span class="a">Semantic complexity router</span>             │  ← cheap LLM scores task 0.0–1.0
+│  (gpt-4o-mini, ~$0.000015/call)       │    <span class="dim">"what time is it?"  → 0.02</span>
+└────────────┬──────────────────────────┘    <span class="dim">"write CUDA matmul" → 0.94</span>
+             │
+      ┌──────┴───────┐
+      │              │
+   simple         complex
+      │              │
+      ▼              ▼
+ <span class="g">Cheap model</span>    Budget check
+ (fast, $)      ├─ affordable → <span class="a">Capable model</span> ($$$)
+                └─ too close  → downgrade to cheap ($)</pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── BENCHMARKS ─── -->
+    <section class="section" id="benchmarks">
+      <p class="prompt-line section-prompt"><span class="ps1">$</span> baar-bench <span class="flag-arg">--dataset</span> all <span class="flag-arg">--limit</span> 200 <span class="flag-arg">--mock</span> <span class="flag-arg">--seed</span> 42</p>
+      <div class="spacer-sm"></div>
+      <div class="scroll-x">
+        <pre class="bench">
+dataset      strategy       routed-cheap    total-cost    savings
+──────────   ────────────   ────────────   ──────────   ─────────
+MMLU         always-big     0%             $1.0005       —
+MMLU         <span class="g">baar-core</span>      <span class="g">81%</span>            <span class="g">$0.157</span>        <span class="a">84.3% ↓</span>
+──────────   ────────────   ────────────   ──────────   ─────────
+GSM8K        always-big     0%             $1.0005       —
+GSM8K        <span class="g">baar-core</span>      <span class="g">87%</span>            <span class="g">$0.129</span>        <span class="a">87.1% ↓</span>
+──────────   ────────────   ────────────   ──────────   ─────────
+HumanEval    always-big     0%             $1.0005       —
+HumanEval    <span class="g">baar-core</span>      39%            $0.614        <span class="a">38.6% ↓</span>
+        </pre>
+      </div>
+      <p class="dim bench-note">HumanEval routes fewer tasks cheap — coding questions score high complexity. Correct behaviour.</p>
+      <div class="spacer"></div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num g" data-count="94" data-suffix="%">0%</span>
+          <span class="stat-label">max cost reduction<br><span class="dim">live benchmark, MMLU</span></span>
+        </div>
+        <div class="stat-sep">·</div>
+        <div class="stat">
+          <span class="stat-num a">$0</span>
+          <span class="stat-label">charged per<br><span class="dim">blocked call</span></span>
+        </div>
+        <div class="stat-sep">·</div>
+        <div class="stat">
+          <span class="stat-num g" data-count="3" data-suffix=" lines">0 lines</span>
+          <span class="stat-label">to integrate</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── CODE EXAMPLES ─── -->
+    <section class="section" id="code">
+      <p class="prompt-line section-prompt"><span class="ps1">$</span> cat <span class="arg">examples/quickstart.py</span></p>
+      <div class="spacer-sm"></div>
+      <div class="tabs">
+        <div class="tab-bar" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true"  onclick="showTab(event,'basic')">basic</button>
+          <button class="tab"        role="tab" aria-selected="false" onclick="showTab(event,'multitenant')">multi-tenant</button>
+          <button class="tab"        role="tab" aria-selected="false" onclick="showTab(event,'guard')">@baar_guard</button>
+          <button class="tab"        role="tab" aria-selected="false" onclick="showTab(event,'middleware')">middleware</button>
+        </div>
+        <div class="tab-pane active" id="tab-basic">
+<pre class="code"><span class="kw">from</span> baar <span class="kw">import</span> BAARRouter, BudgetExhausted
+
+router = BAARRouter(budget=<span class="a">0.10</span>)           <span class="cmt"># hard cap: $0.10 total</span>
+reply  = router.chat(<span class="s">"Explain recursion"</span>)    <span class="cmt"># routes cheap/capable automatically</span>
+
+<span class="kw">print</span>(f<span class="s">"Spent: ${'{'}router.spent:.5f{'}'} / Remaining: ${'{'}router.remaining:.5f{'}'}"</span>)
+
+<span class="cmt"># budget exhausted → BudgetExhausted raised locally, zero API calls made</span>
+<span class="kw">try</span>:
+    router.chat(<span class="s">"Another expensive call"</span>)
+<span class="kw">except</span> BudgetExhausted <span class="kw">as</span> e:
+    <span class="kw">print</span>(f<span class="s">"Blocked locally. Remaining: ${'{'}e.remaining:.5f{'}'}"</span>)</pre>
+        </div>
+        <div class="tab-pane" id="tab-multitenant">
+<pre class="code"><span class="kw">from</span> baar <span class="kw">import</span> BAARRouter
+<span class="kw">from</span> baar.core.stores <span class="kw">import</span> SQLiteBudgetStore
+
+<span class="kw">def</span> <span class="fn">router_for</span>(user_id: str) -&gt; BAARRouter:
+    <span class="kw">return</span> BAARRouter(
+        budget=<span class="a">0.10</span>,
+        store=SQLiteBudgetStore(<span class="s">"budgets.db"</span>, namespace=user_id),
+    )
+
+alice = router_for(<span class="s">"alice"</span>)
+bob   = router_for(<span class="s">"bob"</span>)
+
+alice.chat(<span class="s">"Summarise this document"</span>)  <span class="cmt"># deducted from Alice's $0.10 only</span>
+bob.chat(<span class="s">"Translate to French"</span>)        <span class="cmt"># Bob's quota untouched</span>
+<span class="cmt"># concurrent writes are TOCTOU-safe (WAL mode + exclusive transaction)</span></pre>
+        </div>
+        <div class="tab-pane" id="tab-guard">
+<pre class="code"><span class="kw">from</span> baar <span class="kw">import</span> BAARRouter
+<span class="kw">from</span> baar.middleware <span class="kw">import</span> baar_guard
+
+router = BAARRouter(budget=<span class="a">1.00</span>)
+
+<span class="a">@baar_guard</span>(router, max_calls=<span class="a">10</span>, cost_per_call=<span class="a">0.002</span>)
+<span class="kw">def</span> <span class="fn">run_tool</span>(query: str) -&gt; str:
+    <span class="kw">return</span> expensive_api(query)
+
+run_tool(<span class="s">"query"</span>)   <span class="cmt"># fine</span>
+run_tool(<span class="s">"query"</span>)   <span class="cmt"># fine</span>
+<span class="cmt"># call 11 → GuardExceeded raised before the function executes</span></pre>
+        </div>
+        <div class="tab-pane" id="tab-middleware">
+<pre class="code"><span class="kw">from</span> baar.middleware <span class="kw">import</span> BaarMiddleware
+<span class="kw">from</span> langgraph.graph <span class="kw">import</span> StateGraph
+
+middleware = BaarMiddleware(
+    router=BAARRouter(budget=<span class="a">0.50</span>),
+    max_steps=<span class="a">20</span>,
+)
+
+graph = StateGraph(AgentState)
+graph.add_node(<span class="s">"agent"</span>, middleware.wrap(agent_node))
+<span class="cmt"># step limit + budget gate enforced on every LangGraph step</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── COMPARISON ─── -->
+    <section class="section" id="compare">
+      <p class="prompt-line section-prompt"><span class="ps1">$</span> baar <span class="flag-arg">--compare-alternatives</span></p>
+      <div class="spacer-sm"></div>
+
+      <div class="compare-wrap">
+        <table class="compare-table" aria-label="Feature comparison">
+          <thead>
+            <tr>
+              <th class="feat-col">feature</th>
+              <th class="baar-col"><span class="g">baar-core</span></th>
+              <th>RouteLLM</th>
+              <th>LiteLLM</th>
+              <th>Portkey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-group-start">
+              <td class="feat-col">Hard local kill-switch</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">Zero network calls on block</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">Prevents DoW <span class="tag-badge">OWASP LLM10</span></td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">Fully offline</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr class="row-group-start">
+              <td class="feat-col">Per-user namespaced budgets</td>
+              <td class="baar-col"><span class="check">✓</span> <span class="tag-note">SQLite</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span> <span class="tag-note">proxy req.</span></td>
+              <td><span class="cross">✗</span> <span class="tag-note">cloud only</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">Cross-process TOCTOU-safe</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="neutral">N/A</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">LangGraph step middleware</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">Tool execution guards</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr class="row-group-start">
+              <td class="feat-col">Semantic complexity routing</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">No proxy / no server</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="feat-col">Open source (MIT)</td>
+              <td class="baar-col"><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="spacer-sm"></div>
+      <p class="compare-verdict">
+        Every alternative routes and tracks.
+        <span class="g">Baar-Core prevents</span> — exception raised before a single byte leaves your machine.
+      </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── FEATURES ─── -->
+    <section class="section" id="features">
+      <p class="prompt-line section-prompt"><span class="ps1">$</span> baar <span class="flag-arg">--features</span> <span class="flag-arg">--verbose</span></p>
+      <div class="spacer-sm"></div>
+      <div class="flags">
+        <div class="flag-row">
+          <span class="flag-name g">--kill-switch</span>
+          <span class="flag-desc">local pre-flight check — zero network calls when budget is exceeded</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--semantic-route</span>
+          <span class="flag-desc">cheap LLM scores complexity 0.0–1.0, auto-picks cheap vs capable tier</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--per-user-quota</span>
+          <span class="flag-desc">SQLite-backed namespaced budgets, survives restarts, multi-process safe</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--offline</span>
+          <span class="flag-desc">works fully air-gapped — budget enforcement never touches the network</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--owasp-llm10</span>
+          <span class="flag-desc">direct mitigation for OWASP LLM10:2025 Denial-of-Wallet attacks</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--tool-guard</span>
+          <span class="flag-desc">@baar_guard decorator: per-function call limits + cost deduction</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--langgraph</span>
+          <span class="flag-desc">BaarMiddleware: step limits + budget gate for any LangGraph agent</span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--telemetry</span>
+          <span class="flag-desc">JSONL audit log — inspect with <code>baar-telemetry telemetry.jsonl</code></span>
+        </div>
+        <div class="flag-row">
+          <span class="flag-name g">--open-source</span>
+          <span class="flag-desc">MIT license — fork freely</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ─── FOOTER CTA ─── -->
+    <section class="section footer-section" id="footer">
+      <div class="install-row install-row-lg">
+        <span class="ps1">$</span>
+        <code class="install-cmd">pip install baar-core</code>
+        <span class="cursor-blink">▋</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="footer-cta">
+        <a href="https://github.com/orvi2014/Baar-Core" class="btn-primary" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Star on GitHub
+        </a>
+        <a href="https://pypi.org/project/baar-core/" class="btn-ghost" target="_blank" rel="noopener">PyPI →</a>
+        <a href="https://github.com/orvi2014/Baar-Core/blob/main/README.md" class="btn-ghost" target="_blank" rel="noopener">Docs →</a>
+      </div>
+      <div class="spacer"></div>
+      <p class="footer-meta dim">
+        MIT License &nbsp;·&nbsp; Built by <a href="https://github.com/orvi2014" class="dim-link" target="_blank" rel="noopener">orvi2014</a>
+        &nbsp;·&nbsp; <a href="https://pypi.org/project/baar-core/" class="dim-link" target="_blank" rel="noopener">baar-core on PyPI</a>
+      </p>
+    </section>
+
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

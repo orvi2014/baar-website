@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark background -->
+  <rect width="32" height="32" rx="7" fill="#0d0d0d"/>
+  <!-- Subtle border -->
+  <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="#252525" stroke-width="1"/>
+  <!-- > chevron prompt -->
+  <path d="M5 9 L14 16 L5 23" stroke="#00ff88" stroke-width="2.8"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- _ cursor block -->
+  <rect x="17" y="21" width="10" height="3.5" rx="1" fill="#00ff88"/>
+</svg>
