@@ -145,6 +145,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MDK069LNK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8MDK069LNK');
+
+    function trackEvent(name, params) {
+      if (typeof gtag === 'function') gtag('event', name, params || {});
+    }
+  </script>
 </head>
 <body>
 
@@ -165,8 +178,19 @@
       </a>
       <a href="https://pypi.org/project/baar-core/" class="nav-link" target="_blank" rel="noopener">PyPI</a>
       <a href="https://github.com/orvi2014/Baar-Core#readme" class="nav-link nav-link-hide" target="_blank" rel="noopener">Docs</a>
+      <a href="#install-cmd" class="nav-install-btn" onclick="smoothScroll(event,'install-cmd');trackEvent('click_install_btn',{location:'nav'})">pip install ↓</a>
     </div>
   </nav>
+
+  <!-- ─── PRODUCT HUNT BANNER (stub — uncomment on launch day) ───
+  <div class="ph-banner">
+    <a href="https://www.producthunt.com/posts/baar-core" target="_blank" rel="noopener noreferrer">
+      <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=YOUR_POST_ID&theme=dark"
+        alt="baar-core - Featured on Product Hunt"
+        width="250" height="54" />
+    </a>
+  </div>
+  ─────────────────────────────────────────────────────────────── -->
 
   <main class="terminal">
 
@@ -204,7 +228,7 @@
       <div class="install-row hero-item">
         <span class="ps1">$</span>
         <code class="install-cmd" id="install-cmd">pip install baar-core</code>
-        <button class="copy-btn" id="copy-btn" onclick="copyInstall()" aria-label="Copy install command">
+        <button class="copy-btn" id="copy-btn" onclick="copyInstall();trackEvent('copy_install',{location:'hero'})" aria-label="Copy install command">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
           <span id="copy-label">copy</span>
         </button>
@@ -666,6 +690,13 @@ graph.add_node(<span class="s">"agent"</span>, middleware.wrap(agent_node))
         <a href="https://github.com/orvi2014/Baar-Core/blob/main/README.md" class="btn-ghost" target="_blank" rel="noopener">Docs →</a>
       </div>
       <div class="spacer"></div>
+      <div class="footer-badges">
+        <a href="https://tools.launchllama.co?utm_source=badge&utm_medium=referral" target="_blank" rel="noopener noreferrer">
+          <img src="https://speaktechenglish.com/wp-content/uploads/2026/04/Screenshot_2026-04-09_at_17.40.44-removebg-preview.png"
+            alt="Featured on Launch Llama"
+            width="200" height="50" />
+        </a>
+      </div>
       <p class="footer-meta dim">
         MIT License &nbsp;·&nbsp; Built by <a href="https://github.com/orvi2014" class="dim-link" target="_blank" rel="noopener">orvi2014</a>
         &nbsp;·&nbsp; <a href="https://pypi.org/project/baar-core/" class="dim-link" target="_blank" rel="noopener">baar-core on PyPI</a>
