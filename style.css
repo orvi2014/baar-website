@@ -283,13 +283,13 @@ body {
 
 /* ─── Marker tags ───────────────────────────────────── */
 .tl-marker { font-weight: 700; margin-right: 6px; }
-.tl-green  { color: var(--g); }
-.tl-red    { color: var(--r); }
+.mk-green  { color: var(--g); }
+.mk-red    { color: var(--r); }
 .tl-blue   { color: var(--b); }
 .tl-dim    { color: var(--dim); }
 
 /* glow on green terminal elements */
-.term-window-ok .tl-green,
+.term-window-ok .mk-green,
 .term-window-ok .g { text-shadow: 0 0 10px rgba(0,255,136,.3); }
 
 /* ─── Blink cost number ─────────────────────────────── */
