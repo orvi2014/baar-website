@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+  <rect x="1" y="1" width="1198" height="628" fill="none" stroke="#1e1e1e" stroke-width="2"/>
+
+  <!-- Terminal window -->
+  <rect x="60" y="50" width="1080" height="530" rx="12" fill="#111111" stroke="#252525" stroke-width="1.5"/>
+  <!-- Title bar -->
+  <rect x="60" y="50" width="1080" height="44" rx="12" fill="#1a1a1a"/>
+  <rect x="60" y="74" width="1080" height="20" fill="#1a1a1a"/>
+  <!-- Traffic lights -->
+  <circle cx="93"  cy="72" r="7" fill="#ff5f56"/>
+  <circle cx="117" cy="72" r="7" fill="#ffbd2e"/>
+  <circle cx="141" cy="72" r="7" fill="#27c93f"/>
+  <text x="590" y="77" font-family="monospace" font-size="13" fill="#555" text-anchor="middle">baar-core — zsh — 120×40</text>
+
+  <!-- Install command line -->
+  <text x="96" y="160" font-family="monospace" font-size="22" fill="#555555">$</text>
+  <text x="118" y="160" font-family="monospace" font-size="22" fill="#00ff88">pip install baar-core</text>
+  <rect x="468" y="141" width="13" height="22" rx="2" fill="#00ff88" opacity="0.85"/>
+
+  <!-- Product name -->
+  <text x="96" y="270" font-family="monospace" font-size="80" font-weight="700" fill="#ffffff" letter-spacing="-2">baar-core</text>
+
+  <!-- Tagline -->
+  <text x="96" y="325" font-family="monospace" font-size="22" fill="#aaaaaa">Pre-flight budget enforcement for LLM agents.</text>
+  <text x="96" y="358" font-family="monospace" font-size="22" fill="#aaaaaa">Stops the API call before it fires. Zero overhead.</text>
+
+  <!-- Divider -->
+  <line x1="96" y1="396" x2="1104" y2="396" stroke="#252525" stroke-width="1"/>
+
+  <!-- Stats row -->
+  <text x="96"  y="435" font-family="monospace" font-size="19" fill="#00ff88">84–94%</text>
+  <text x="96"  y="458" font-family="monospace" font-size="14" fill="#555555">cost reduction</text>
+
+  <text x="340" y="435" font-family="monospace" font-size="19" fill="#00ff88">3 lines</text>
+  <text x="340" y="458" font-family="monospace" font-size="14" fill="#555555">to protect any agent</text>
+
+  <text x="600" y="435" font-family="monospace" font-size="19" fill="#00ff88">$0</text>
+  <text x="600" y="458" font-family="monospace" font-size="14" fill="#555555">charged after budget exhausted</text>
+
+  <text x="900" y="435" font-family="monospace" font-size="19" fill="#00ff88">open source</text>
+  <text x="900" y="458" font-family="monospace" font-size="14" fill="#555555">MIT license</text>
+
+  <!-- Footer -->
+  <text x="96" y="548" font-family="monospace" font-size="14" fill="#333333">github.com/orvi2014/Baar-Core  ·  pypi.org/project/baar-core  ·  baar.robatdasorvi.com</text>
+</svg>

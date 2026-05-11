@@ -4,9 +4,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>baar-core — Pre-flight budget enforcement for LLM agents</title>
-  <meta name="description" content="Hard budget enforcement for LLM agents. Stops API calls before they happen. 84–94% cost reduction.">
+  <meta name="description" content="Hard budget enforcement for LLM agents. Stops API calls before they happen. 84–94% cost reduction. pip install baar-core.">
+  <meta name="keywords" content="LLM budget enforcement, AI agent cost control, LLM cost limit, Python LLM library, baar-core, LLM spending cap, agent budget, OpenAI cost control">
+  <meta name="author" content="orvi">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://baar.robatdasorvi.com/">
+
+  <!-- Open Graph -->
   <meta property="og:title" content="baar-core — Stop LLM bills before they happen">
   <meta property="og:description" content="Pre-flight kill-switch for LLM agents. Local budget check. No DNS, no TCP, $0 once you're out.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://baar.robatdasorvi.com/">
+  <meta property="og:site_name" content="baar-core">
+  <meta property="og:image" content="https://baar.robatdasorvi.com/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="baar-core — Pre-flight budget enforcement for LLM agents">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@orvi_onethread">
+  <meta name="twitter:creator" content="@orvi_onethread">
+  <meta name="twitter:title" content="baar-core — Stop LLM bills before they happen">
+  <meta name="twitter:description" content="Pre-flight kill-switch for LLM agents. Local budget check. No DNS, no TCP, $0 once you're out.">
+  <meta name="twitter:image" content="https://baar.robatdasorvi.com/og-image.svg">
+  <meta name="twitter:image:alt" content="baar-core — Pre-flight budget enforcement for LLM agents">
+
+  <!-- JSON-LD: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "baar-core",
+    "description": "Pre-flight budget enforcement for LLM agents. Stops API calls before they fire. Supports per-user caps, semantic routing, async agents, and SQLite-backed persistence.",
+    "url": "https://baar.robatdasorvi.com/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Linux, macOS, Windows",
+    "programmingLanguage": "Python",
+    "softwareVersion": "0.5.0",
+    "softwareRequirements": "Python 3.9+",
+    "license": "https://github.com/orvi2014/Baar-Core/blob/main/LICENSE",
+    "codeRepository": "https://github.com/orvi2014/Baar-Core",
+    "downloadUrl": "https://pypi.org/project/baar-core/",
+    "installUrl": "https://pypi.org/project/baar-core/",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "orvi",
+      "url": "https://robatdasorvi.com",
+      "sameAs": "https://twitter.com/orvi_onethread"
+    },
+    "featureList": [
+      "Pre-flight budget check before every API call",
+      "Semantic routing to cheap or capable model tiers",
+      "Per-user budget caps for multi-tenant SaaS",
+      "SQLite-backed persistent budget storage",
+      "Async and sync agent support",
+      "Zero network overhead on budget exhaustion",
+      "FastAPI middleware and decorator support"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage (AEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is baar-core?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "baar-core is an open-source Python library that enforces hard budget limits on LLM agents. It intercepts API calls before they fire and blocks them locally when the budget is exhausted — no DNS lookup, no TCP connection, $0 charged."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does baar-core prevent LLM overspending?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "baar-core runs a pre-flight check before every LLM API call. It estimates the cost of the call and compares it against the remaining budget. If the estimated cost exceeds the budget, it raises a BudgetExhausted exception locally — before any network request is made — so you are never charged for the blocked call."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I install baar-core?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Install via pip: pip install baar-core. Requires Python 3.9 or higher."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does baar-core support async agents?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. baar-core is fully async-safe and thread-safe. It works with both sync and async LLM agent frameworks including LangChain, LlamaIndex, and custom asyncio agents."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is semantic routing in baar-core?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Semantic routing automatically classifies each prompt by complexity and routes it to the cheapest model capable of handling it. Simple queries go to a cheap tier (e.g. gpt-4o-mini) and complex ones go to a capable tier (e.g. gpt-4o). This typically reduces LLM costs by 84–94% without any change to output quality."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can baar-core enforce per-user budgets in a multi-tenant SaaS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. baar-core's SQLiteBudgetStore tracks spend per user_id across sessions. Budget state persists across restarts, is thread-safe and async-safe, and requires only 3 lines of code to set up."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is baar-core free and open source?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. baar-core is free and released under the MIT license. Source code is available at github.com/orvi2014/Baar-Core."
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.svg">
   <link rel="shortcut icon" href="favicon.svg">
