@@ -487,9 +487,11 @@ body {
 }
 .dim-link:hover { color: var(--g); border-bottom-color: var(--g); }
 .ph-banner {
-  display: flex; justify-content: center; padding: 10px 0;
-  background: #1a1a1a; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: center; align-items: center; gap: 16px;
+  padding: 10px 20px; background: #1a0a00; border-bottom: 1px solid #ff6154;
+  position: sticky; top: 0; z-index: 200;
 }
+.ph-banner-text { font-size: 13px; color: #ffb399; }
 
 /* ════════════════════════════════════════════════════════
    RESPONSIVE

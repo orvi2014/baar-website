@@ -182,15 +182,27 @@
     </div>
   </nav>
 
-  <!-- ─── PRODUCT HUNT BANNER (stub — uncomment on launch day) ───
-  <div class="ph-banner">
-    <a href="https://www.producthunt.com/posts/baar-core" target="_blank" rel="noopener noreferrer">
-      <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=YOUR_POST_ID&theme=dark"
-        alt="baar-core - Featured on Product Hunt"
-        width="250" height="54" />
+  <!-- ─── PRODUCT HUNT BANNER — auto-shows on May 13 PT ─── -->
+  <div class="ph-banner" id="ph-banner" style="display:none;">
+    <span class="ph-banner-text">🎉 We're live on Product Hunt today — support us!</span>
+    <a href="https://www.producthunt.com/products/baar-core?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-baar-core" target="_blank" rel="noopener noreferrer" onclick="trackEvent('click_ph_banner',{location:'top'})">
+      <img alt="baar-core - Stop LLM API bills before they happen — not after | Product Hunt"
+        width="250" height="54"
+        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1144788&theme=dark&t=1778549212835" />
     </a>
   </div>
-  ─────────────────────────────────────────────────────────────── -->
+  <script>
+    (function() {
+      // show banner from May 13 00:00 PT through May 14 00:00 PT
+      var now    = new Date();
+      var start  = new Date('2026-05-13T07:00:00Z'); // midnight PT = 07:00 UTC
+      var end    = new Date('2026-05-14T07:00:00Z');
+      if (now >= start && now < end) {
+        document.getElementById('ph-banner').style.display = 'flex';
+      }
+    })();
+  </script>
+  <!-- ──────────────────────────────────────────────────────── -->
 
   <main class="terminal">
 
@@ -695,6 +707,11 @@ graph.add_node(<span class="s">"agent"</span>, middleware.wrap(agent_node))
           <img src="https://speaktechenglish.com/wp-content/uploads/2026/04/Screenshot_2026-04-09_at_17.40.44-removebg-preview.png"
             alt="Featured on Launch Llama"
             width="200" height="50" />
+        </a>
+        <a href="https://www.producthunt.com/products/baar-core?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-baar-core" target="_blank" rel="noopener noreferrer">
+          <img alt="baar-core - Stop LLM API bills before they happen — not after | Product Hunt"
+            width="250" height="54"
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1144788&theme=dark&t=1778549212835" />
         </a>
       </div>
       <p class="footer-meta dim">
