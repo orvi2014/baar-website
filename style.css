@@ -488,7 +488,7 @@ body {
 .dim-link:hover { color: var(--g); border-bottom-color: var(--g); }
 .ph-banner {
   display: flex; justify-content: center; align-items: center; gap: 16px;
-  padding: 10px 20px; background: #1a0a00; border-bottom: 1px solid #ff6154;
+  padding: 6px 20px; background: #1a0a00; border-bottom: 1px solid #ff6154;
   position: sticky; top: var(--nav-h); z-index: 199;
   margin-top: var(--nav-h);
 }
