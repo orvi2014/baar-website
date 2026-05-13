@@ -489,7 +489,8 @@ body {
 .ph-banner {
   display: flex; justify-content: center; align-items: center; gap: 16px;
   padding: 10px 20px; background: #1a0a00; border-bottom: 1px solid #ff6154;
-  position: sticky; top: 0; z-index: 200;
+  position: sticky; top: var(--nav-h); z-index: 199;
+  margin-top: var(--nav-h);
 }
 .ph-banner-text { font-size: 13px; color: #ffb399; }
 
